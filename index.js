@@ -61,6 +61,7 @@ export default function* codePushSaga(options = {}) {
     syncOnResume: true,
     syncOnInterval: 0,
     syncOnStart: true,
+    syncStatusCallback: null,
 
     delayByInterval: 0,
     delayByAction: null,
@@ -81,7 +82,7 @@ export default function* codePushSaga(options = {}) {
   // off the "event loop".
   if (options.syncOnStart) {
     try {
-      yield call(sync, options.syncOptions);
+      yield call(sync, options.syncOptions, options.syncStatusCallback);
     } catch (e) {
       console.log(e);
     }
@@ -107,7 +108,7 @@ export default function* codePushSaga(options = {}) {
   // to watch for any of the requested sync points.
   while (yield race(syncEvents)) {
     try {
-      yield call(sync, options.syncOptions);
+      yield call(sync, options.syncOptions, options.syncStatusCallback);
     } catch (e) {
       console.log(e);
     }

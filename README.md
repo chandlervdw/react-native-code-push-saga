@@ -11,7 +11,7 @@ service](http://codepush.tools) via a simple, declarative solution.
 
     ```shell
     npm i --save react-native-code-push-saga@latest
-    ``` 
+    ```
 
 3. Within your app's main saga, import the saga module
 
@@ -45,16 +45,21 @@ yield spawn(codePushSaga, {
 });
 
 // Customize the install mode of updates
-// to occur when the app next resumes.
+// to occur when the app next resumes and
+// pass a syncStatus callback, i.e.
+// codePush.sync(syncOptions, syncStatusCallback)
 yield spawn(codePushSaga, {
     syncOptions: {
         installMode: codePush.InstallMode.ON_NEXT_RESUME
+    },
+    syncStatusCallback: (status) => {
+      console.log('Code-Push Status: ', status);
     }
 });
 
 // Synchronize with CodePush anytime
 // a Redux action named "NAVIGATE_HOME" is dispatched.
 yield spawn(codePushSaga, {
-   syncActionName: "NAVIGATE_HOME" 
+   syncActionName: "NAVIGATE_HOME"
 });
 ```
